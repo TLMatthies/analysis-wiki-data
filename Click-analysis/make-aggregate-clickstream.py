@@ -8,6 +8,8 @@ import glob
 
 con = dd.connect()
 
+# Needs to be individual as memory cannot handle multiple of these
+# files referenced in one script
 tsv_dir = os.path.join(".", "clickstream-enwiki-2024-04.tsv")
 tsv_files = glob.glob(tsv_dir)
 
