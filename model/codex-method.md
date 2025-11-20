@@ -1,0 +1,3 @@
+After asking codex to give a short summary of it's naming method, it returned:
+
+I tokenized each title (underscores → spaces, alphanumerics only), dropped stopwords/disambiguation/numeric/short tokens, and built per‑group token counts plus how many groups each token appears in. For each group, I scored tokens with a tf‑idf style weight (count × log(#groups / groups_with_token)), lightly penalized generic geography/team terms, filtered out bland words (season/episode/film/etc.), and picked up to 3 top tokens. I then attached a domain suffix (e.g., Music & Charts, Sports & Leagues, Politics & Elections…) based on keyword overlap, otherwise fell back to a neutral suffix. Joined the top tokens and suffix into a succinct name and wrote {group, name} to the parquet.
