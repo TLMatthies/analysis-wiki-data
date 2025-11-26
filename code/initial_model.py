@@ -7,7 +7,7 @@ con = dd.connect()
 rel = con.sql("""
     SELECT prev, curr, n AS weight
     FROM '../Click-analysis/clickstream-enwiki-2025-10.parquet'
-    WHERE type = 'link'
+    WHERE type != 'external'
     """)
 print(f"Completed query. Rows: \n{rel.count('prev')}")
 
@@ -37,7 +37,7 @@ membership_df = pd.DataFrame({
     "title": titles,
     "group": memberships
 })
-file_string = f"page_groups_{f"{res:.20f}".partition(".")[2].rstrip("0")}.parquet"
+file_string = f"page_groups_{f"{res:.20f}".partition(".")[2].rstrip("0")}_other.parquet"
 membership_df.to_parquet(file_string, index=False)
 print(f"Wrote page -> group mapping to {file_string}")
 
