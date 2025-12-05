@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #0f172a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 0, "label": "Album / Song / Football - Music \u0026 Charts", "shape": "dot", "title": "group 0\u003cbr\u003esize: 3,340,668", "value": 3340668}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 1, "label": "Badminton / Bwf / Championships - Music \u0026 Charts", "shape": "dot", "title": "group 1\u003cbr\u003esize: 2,230", "value": 2230}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 2, "label": "Music - Music \u0026 Charts", "shape": "dot", "title": "group 2\u003cbr\u003esize: 162", "value": 162}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 3, "label": "Rhode / Gubernatorial / Island - Politics \u0026 Elections", "shape": "dot", "title": "group 3\u003cbr\u003esize: 128", "value": 128}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 4, "label": "Hampshire / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 4\u003cbr\u003esize: 126", "value": 126}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 5, "label": "Vermont / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 5\u003cbr\u003esize: 114", "value": 114}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 6, "label": "Sanfl / Final / Grand - Community Topics", "shape": "dot", "title": "group 6\u003cbr\u003esize: 79", "value": 79}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 7, "label": "Jersey / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 7\u003cbr\u003esize: 77", "value": 77}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 8, "label": "Connecticut / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 8\u003cbr\u003esize: 76", "value": 76}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 9, "label": "Wow / Gospel / Hits - Music \u0026 Charts", "shape": "dot", "title": "group 9\u003cbr\u003esize: 66", "value": 66}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 10, "label": "Southern / Football / League - Sports \u0026 Leagues", "shape": "dot", "title": "group 10\u003cbr\u003esize: 62", "value": 62}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 11, "label": "Group 11 - Miscellaneous Set", "shape": "dot", "title": "group 11\u003cbr\u003esize: 60", "value": 60}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 12, "label": "Basketball / Ncaa / Men - Sports \u0026 Leagues", "shape": "dot", "title": "group 12\u003cbr\u003esize: 58", "value": 58}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 13, "label": "Gubernatorial / Virginia / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 13\u003cbr\u003esize: 56", "value": 56}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 14, "label": "Fresh / Hits / Autumn - Cultural Collection", "shape": "dot", "title": "group 14\u003cbr\u003esize: 55", "value": 55}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 15, "label": "Group / Bulgarian / Football - Sports \u0026 Leagues", "shape": "dot", "title": "group 15\u003cbr\u003esize: 55", "value": 55}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 16, "label": "Maine / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 16\u003cbr\u003esize: 54", "value": 54}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 17, "label": "Uci / Cycling / Track - Notable People", "shape": "dot", "title": "group 17\u003cbr\u003esize: 48", "value": 48}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 18, "label": "Michigan / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 18\u003cbr\u003esize: 47", "value": 47}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 19, "label": "Calligrapha / Signatipennis / Sigmoidea - Miscellaneous Set", "shape": "dot", "title": "group 19\u003cbr\u003esize: 45", "value": 45}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 20, "label": "Carioca / Campeonato - General Reference", "shape": "dot", "title": "group 20\u003cbr\u003esize: 42", "value": 42}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 21, "label": "Paulista / Campeonato - Mixed Topics", "shape": "dot", "title": "group 21\u003cbr\u003esize: 42", "value": 42}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 22, "label": "Pba / Tour / Palombi - Historical Notes", "shape": "dot", "title": "group 22\u003cbr\u003esize: 40", "value": 40}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 23, "label": "Descentralizado / Torneo / Peruvian - Local Focus", "shape": "dot", "title": "group 23\u003cbr\u003esize: 40", "value": 40}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 24, "label": "Billboard / Hits / Top - Music \u0026 Charts", "shape": "dot", "title": "group 24\u003cbr\u003esize: 39", "value": 39}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 25, "label": "Fool / Assassin / Trilogy - Film, TV \u0026 Media", "shape": "dot", "title": "group 25\u003cbr\u003esize: 39", "value": 39}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 26, "label": "Iraqi / League / Premier - Sports \u0026 Leagues", "shape": "dot", "title": "group 26\u003cbr\u003esize: 37", "value": 37}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 27, "label": "Deltora / Quest / Rowan - Film, TV \u0026 Media", "shape": "dot", "title": "group 27\u003cbr\u003esize: 37", "value": 37}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 28, "label": "Fuerza / Primera - Events \u0026 Occasions", "shape": "dot", "title": "group 28\u003cbr\u003esize: 36", "value": 36}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 29, "label": "Paok / Evi / Milan - Miscellaneous Set", "shape": "dot", "title": "group 29\u003cbr\u003esize: 36", "value": 36}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 30, "label": "Austrian / Football / Championship - Sports \u0026 Leagues", "shape": "dot", "title": "group 30\u003cbr\u003esize: 34", "value": 34}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 31, "label": "Magic / Lioness / Novel - Music \u0026 Charts", "shape": "dot", "title": "group 31\u003cbr\u003esize: 32", "value": 32}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 32, "label": "Isthmian / League - Sports \u0026 Leagues", "shape": "dot", "title": "group 32\u003cbr\u003esize: 32", "value": 32}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 33, "label": "Cincinnati / Reds / Stockings - Local Focus", "shape": "dot", "title": "group 33\u003cbr\u003esize: 32", "value": 32}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 34, "label": "Gubernatorial / Carolina / North - Politics \u0026 Elections", "shape": "dot", "title": "group 34\u003cbr\u003esize: 31", "value": 31}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 35, "label": "Parliament / Zealand / 35Th - Politics \u0026 Elections", "shape": "dot", "title": "group 35\u003cbr\u003esize: 31", "value": 31}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 36, "label": "Rvalsdeild - Community Topics", "shape": "dot", "title": "group 36\u003cbr\u003esize: 31", "value": 31}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 37, "label": "Naia / Football / Division - Sports \u0026 Leagues", "shape": "dot", "title": "group 37\u003cbr\u003esize: 31", "value": 31}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 38, "label": "Georgia / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 38\u003cbr\u003esize: 30", "value": 30}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 39, "label": "Singles / Championships / Women - Miscellaneous Set", "shape": "dot", "title": "group 39\u003cbr\u003esize: 30", "value": 30}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 40, "label": "Nemzeti / Bajnoks - General Reference", "shape": "dot", "title": "group 40\u003cbr\u003esize: 30", "value": 30}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 41, "label": "Vfa - Mixed Topics", "shape": "dot", "title": "group 41\u003cbr\u003esize: 29", "value": 29}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 42, "label": "Hibernian - Historical Notes", "shape": "dot", "title": "group 42\u003cbr\u003esize: 28", "value": 28}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 43, "label": "British / League / Two - Sports \u0026 Leagues", "shape": "dot", "title": "group 43\u003cbr\u003esize: 28", "value": 28}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 44, "label": "Country / Academy / Music - Music \u0026 Charts", "shape": "dot", "title": "group 44\u003cbr\u003esize: 27", "value": 27}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 45, "label": "Australian / Colonial / South - Politics \u0026 Elections", "shape": "dot", "title": "group 45\u003cbr\u003esize: 27", "value": 27}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 46, "label": "Gma / Dove / Awards - Community Topics", "shape": "dot", "title": "group 46\u003cbr\u003esize: 27", "value": 27}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 47, "label": "Karate / European / Championships - Notable People", "shape": "dot", "title": "group 47\u003cbr\u003esize: 26", "value": 26}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 48, "label": "Kansas / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 48\u003cbr\u003esize: 25", "value": 25}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 49, "label": "Connecticut / Gubernatorial / Election - Politics \u0026 Elections", "shape": "dot", "title": "group 49\u003cbr\u003esize: 24", "value": 24}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": 0, "title": "weight: 280", "to": 31, "value": 280.0, "width": 4.090623489235047}, {"arrows": "to", "from": 22, "title": "weight: 1,257", "to": 22, "value": 1257.0, "width": 5.954342600360822}, {"arrows": "to", "from": 0, "title": "weight: 14", "to": 22, "value": 14.0, "width": 1.9343364202676694}, {"arrows": "to", "from": 0, "title": "weight: 10", "to": 32, "value": 10.0, "width": 1.7782794100389228}, {"arrows": "to", "from": 0, "title": "weight: 78", "to": 15, "value": 78.0, "width": 2.9718278662008415}, {"arrows": "to", "from": 42, "title": "weight: 12", "to": 0, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 10, "title": "weight: 32", "to": 0, "value": 32.0, "width": 2.378414230005442}, {"arrows": "to", "from": 9, "title": "weight: 4,900", "to": 9, "value": 4900.0, "width": 8.366600265340756}, {"arrows": "to", "from": 5, "title": "weight: 2,670", "to": 5, "value": 2670.0, "width": 7.188326838079585}, {"arrows": "to", "from": 4, "title": "weight: 2,417", "to": 4, "value": 2417.0, "width": 7.01163277797172}, {"arrows": "to", "from": 19, "title": "weight: 181", "to": 0, "value": 181.0, "width": 3.6679182170645124}, {"arrows": "to", "from": 27, "title": "weight: 311", "to": 0, "value": 311.0, "width": 4.19942759058284}, {"arrows": "to", "from": 44, "title": "weight: 568", "to": 44, "value": 568.0, "width": 4.881879819867135}, {"arrows": "to", "from": 20, "title": "weight: 12", "to": 0, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 0, "title": "weight: 72", "to": 5, "value": 72.0, "width": 2.9129506302439405}, {"arrows": "to", "from": 0, "title": "weight: 51", "to": 9, "value": 51.0, "width": 2.6723451177837885}, {"arrows": "to", "from": 0, "title": "weight: 35", "to": 14, "value": 35.0, "width": 2.4322992790977875}, {"arrows": "to", "from": 0, "title": "weight: 22", "to": 30, "value": 22.0, "width": 2.1657367706679937}, {"arrows": "to", "from": 0, "title": "weight: 27", "to": 17, "value": 27.0, "width": 2.2795070569547775}, {"arrows": "to", "from": 33, "title": "weight: 608", "to": 33, "value": 608.0, "width": 4.965647592396777}, {"arrows": "to", "from": 43, "title": "weight: 873", "to": 43, "value": 873.0, "width": 5.435675984216528}, {"arrows": "to", "from": 29, "title": "weight: 717", "to": 29, "value": 717.0, "width": 5.174635801483208}, {"arrows": "to", "from": 0, "title": "weight: 11", "to": 37, "value": 11.0, "width": 1.8211602868378718}, {"arrows": "to", "from": 0, "title": "weight: 13", "to": 35, "value": 13.0, "width": 1.8988289221159418}, {"arrows": "to", "from": 25, "title": "weight: 38,171", "to": 25, "value": 38171.0, "width": 10.0}, {"arrows": "to", "from": 13, "title": "weight: 4,334", "to": 13, "value": 4334.0, "width": 8.113761295634175}, {"arrows": "to", "from": 20, "title": "weight: 843", "to": 20, "value": 843.0, "width": 5.388363599639129}, {"arrows": "to", "from": 26, "title": "weight: 661", "to": 26, "value": 661.0, "width": 5.070495070933891}, {"arrows": "to", "from": 17, "title": "weight: 949", "to": 17, "value": 949.0, "width": 5.5503012171862105}, {"arrows": "to", "from": 21, "title": "weight: 1,080", "to": 21, "value": 1080.0, "width": 5.732656753226201}, {"arrows": "to", "from": 34, "title": "weight: 11", "to": 0, "value": 11.0, "width": 1.8211602868378718}, {"arrows": "to", "from": 26, "title": "weight: 13", "to": 0, "value": 13.0, "width": 1.8988289221159418}, {"arrows": "to", "from": 7, "title": "weight: 3,860", "to": 7, "value": 3860.0, "width": 7.882188672446015}, {"arrows": "to", "from": 29, "title": "weight: 34", "to": 0, "value": 34.0, "width": 2.414736402766418}, {"arrows": "to", "from": 13, "title": "weight: 78", "to": 0, "value": 78.0, "width": 2.9718278662008415}, {"arrows": "to", "from": 38, "title": "weight: 14", "to": 0, "value": 14.0, "width": 1.9343364202676694}, {"arrows": "to", "from": 42, "title": "weight: 435", "to": 42, "value": 435.0, "width": 4.566908540206844}, {"arrows": "to", "from": 35, "title": "weight: 1,069", "to": 35, "value": 1069.0, "width": 5.7180036243905645}, {"arrows": "to", "from": 48, "title": "weight: 1,008", "to": 48, "value": 1008.0, "width": 5.634626494522515}, {"arrows": "to", "from": 46, "title": "weight: 26", "to": 0, "value": 26.0, "width": 2.2581008643532257}, {"arrows": "to", "from": 0, "title": "weight: 21", "to": 20, "value": 21.0, "width": 2.1406951429280725}, {"arrows": "to", "from": 32, "title": "weight: 703", "to": 32, "value": 703.0, "width": 5.149188981492688}, {"arrows": "to", "from": 39, "title": "weight: 364", "to": 39, "value": 364.0, "width": 4.367926742556349}, {"arrows": "to", "from": 47, "title": "weight: 349", "to": 47, "value": 349.0, "width": 4.322214905840454}, {"arrows": "to", "from": 17, "title": "weight: 30", "to": 0, "value": 30.0, "width": 2.340347319320716}, {"arrows": "to", "from": 43, "title": "weight: 20", "to": 0, "value": 20.0, "width": 2.114742526881128}, {"arrows": "to", "from": 33, "title": "weight: 12", "to": 0, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 28, "title": "weight: 10", "to": 0, "value": 10.0, "width": 1.7782794100389228}, {"arrows": "to", "from": 36, "title": "weight: 13", "to": 0, "value": 13.0, "width": 1.8988289221159418}, {"arrows": "to", "from": 0, "title": "weight: 11", "to": 12, "value": 11.0, "width": 1.8211602868378718}, {"arrows": "to", "from": 24, "title": "weight: 1,372", "to": 24, "value": 1372.0, "width": 6.086092207229879}, {"arrows": "to", "from": 30, "title": "weight: 619", "to": 30, "value": 619.0, "width": 4.987956556471744}, {"arrows": "to", "from": 0, "title": "weight: 47", "to": 6, "value": 47.0, "width": 2.6183304986958853}, {"arrows": "to", "from": 16, "title": "weight: 1,086", "to": 16, "value": 1086.0, "width": 5.740602242497573}, {"arrows": "to", "from": 0, "title": "weight: 12", "to": 41, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 16, "title": "weight: 29", "to": 0, "value": 29.0, "width": 2.320595787106084}, {"arrows": "to", "from": 0, "title": "weight: 11", "to": 38, "value": 11.0, "width": 1.8211602868378718}, {"arrows": "to", "from": 4, "title": "weight: 23", "to": 0, "value": 23.0, "width": 2.189938703094842}, {"arrows": "to", "from": 18, "title": "weight: 31", "to": 0, "value": 31.0, "width": 2.359611061770567}, {"arrows": "to", "from": 32, "title": "weight: 16", "to": 0, "value": 16.0, "width": 2.0}, {"arrows": "to", "from": 10, "title": "weight: 2,094", "to": 10, "value": 2094.0, "width": 6.76463190089381}, {"arrows": "to", "from": 46, "title": "weight: 967", "to": 46, "value": 967.0, "width": 5.576434668399911}, {"arrows": "to", "from": 2, "title": "weight: 2,488", "to": 2, "value": 2488.0, "width": 7.0625672140773075}, {"arrows": "to", "from": 8, "title": "weight: 1,115", "to": 8, "value": 1115.0, "width": 5.778547889749466}, {"arrows": "to", "from": 3, "title": "weight: 1,737", "to": 3, "value": 1737.0, "width": 6.455798321536184}, {"arrows": "to", "from": 31, "title": "weight: 36", "to": 0, "value": 36.0, "width": 2.449489742783178}, {"arrows": "to", "from": 15, "title": "weight: 66", "to": 0, "value": 66.0, "width": 2.8502698827717983}, {"arrows": "to", "from": 0, "title": "weight: 10", "to": 39, "value": 10.0, "width": 1.7782794100389228}, {"arrows": "to", "from": 0, "title": "weight: 21", "to": 2, "value": 21.0, "width": 2.1406951429280725}, {"arrows": "to", "from": 40, "title": "weight: 19", "to": 0, "value": 19.0, "width": 2.087797629929844}, {"arrows": "to", "from": 0, "title": "weight: 13", "to": 28, "value": 13.0, "width": 1.8988289221159418}, {"arrows": "to", "from": 27, "title": "weight: 9,564", "to": 27, "value": 9564.0, "width": 9.889171119319414}, {"arrows": "to", "from": 0, "title": "weight: 560", "to": 25, "value": 560.0, "width": 4.864598558195575}, {"arrows": "to", "from": 40, "title": "weight: 698", "to": 40, "value": 698.0, "width": 5.140008718596284}, {"arrows": "to", "from": 38, "title": "weight: 596", "to": 38, "value": 596.0, "width": 4.940962581468049}, {"arrows": "to", "from": 34, "title": "weight: 339", "to": 34, "value": 339.0, "width": 4.290915128445443}, {"arrows": "to", "from": 0, "title": "weight: 61", "to": 21, "value": 61.0, "width": 2.794682392671241}, {"arrows": "to", "from": 0, "title": "weight: 97", "to": 7, "value": 97.0, "width": 3.138288992714996}, {"arrows": "to", "from": 37, "title": "weight: 669", "to": 37, "value": 669.0, "width": 5.085767819391201}, {"arrows": "to", "from": 0, "title": "weight: 273", "to": 27, "value": 273.0, "width": 4.064813850824944}, {"arrows": "to", "from": 41, "title": "weight: 498", "to": 41, "value": 498.0, "width": 4.723972227312666}, {"arrows": "to", "from": 12, "title": "weight: 23", "to": 0, "value": 23.0, "width": 2.189938703094842}, {"arrows": "to", "from": 0, "title": "weight: 26", "to": 48, "value": 26.0, "width": 2.2581008643532257}, {"arrows": "to", "from": 3, "title": "weight: 17", "to": 0, "value": 17.0, "width": 2.0305431848689306}, {"arrows": "to", "from": 1, "title": "weight: 21,182", "to": 0, "value": 21182.0, "width": 10.0}, {"arrows": "to", "from": 31, "title": "weight: 5,578", "to": 31, "value": 5578.0, "width": 8.642106768569302}, {"arrows": "to", "from": 12, "title": "weight: 1,381", "to": 12, "value": 1381.0, "width": 6.096048585118404}, {"arrows": "to", "from": 15, "title": "weight: 2,357", "to": 15, "value": 2357.0, "width": 6.967707253878669}, {"arrows": "to", "from": 25, "title": "weight: 1,691", "to": 0, "value": 1691.0, "width": 6.412625857626826}, {"arrows": "to", "from": 0, "title": "weight: 42", "to": 18, "value": 42.0, "width": 2.5457298950218306}, {"arrows": "to", "from": 49, "title": "weight: 400", "to": 49, "value": 400.0, "width": 4.47213595499958}, {"arrows": "to", "from": 0, "title": "weight: 32", "to": 10, "value": 32.0, "width": 2.378414230005442}, {"arrows": "to", "from": 0, "title": "weight: 11", "to": 47, "value": 11.0, "width": 1.8211602868378718}, {"arrows": "to", "from": 48, "title": "weight: 31", "to": 0, "value": 31.0, "width": 2.359611061770567}, {"arrows": "to", "from": 1, "title": "weight: 706,914", "to": 1, "value": 706914.0, "width": 10.0}, {"arrows": "to", "from": 0, "title": "weight: 18", "to": 33, "value": 18.0, "width": 2.0597671439071177}, {"arrows": "to", "from": 0, "title": "weight: 20", "to": 40, "value": 20.0, "width": 2.114742526881128}, {"arrows": "to", "from": 7, "title": "weight: 52", "to": 0, "value": 52.0, "width": 2.68534961428265}, {"arrows": "to", "from": 35, "title": "weight: 27", "to": 0, "value": 27.0, "width": 2.2795070569547775}, {"arrows": "to", "from": 0, "title": "weight: 20", "to": 24, "value": 20.0, "width": 2.114742526881128}, {"arrows": "to", "from": 30, "title": "weight: 11", "to": 0, "value": 11.0, "width": 1.8211602868378718}, {"arrows": "to", "from": 0, "title": "weight: 17", "to": 4, "value": 17.0, "width": 2.0305431848689306}, {"arrows": "to", "from": 0, "title": "weight: 18,181", "to": 1, "value": 18181.0, "width": 10.0}, {"arrows": "to", "from": 19, "title": "weight: 4,891", "to": 19, "value": 4891.0, "width": 8.362755810115672}, {"arrows": "to", "from": 23, "title": "weight: 1,362", "to": 23, "value": 1362.0, "width": 6.074971948453085}, {"arrows": "to", "from": 6, "title": "weight: 2,185", "to": 6, "value": 2185.0, "width": 6.836957186503436}, {"arrows": "to", "from": 37, "title": "weight: 10", "to": 0, "value": 10.0, "width": 1.7782794100389228}, {"arrows": "to", "from": 14, "title": "weight: 5,205", "to": 14, "value": 5205.0, "width": 8.493861662501399}, {"arrows": "to", "from": 45, "title": "weight: 659", "to": 45, "value": 659.0, "width": 5.066655238516518}, {"arrows": "to", "from": 6, "title": "weight: 37", "to": 0, "value": 37.0, "width": 2.4663257145596607}, {"arrows": "to", "from": 0, "title": "weight: 2,261,408,551", "to": 0, "value": 2261408551.0, "width": 10.0}, {"arrows": "to", "from": 5, "title": "weight: 26", "to": 0, "value": 26.0, "width": 2.2581008643532257}, {"arrows": "to", "from": 22, "title": "weight: 26", "to": 0, "value": 26.0, "width": 2.2581008643532257}, {"arrows": "to", "from": 36, "title": "weight: 413", "to": 36, "value": 413.0, "width": 4.508037425854135}, {"arrows": "to", "from": 44, "title": "weight: 20", "to": 0, "value": 20.0, "width": 2.114742526881128}, {"arrows": "to", "from": 2, "title": "weight: 12", "to": 0, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 0, "title": "weight: 12", "to": 26, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 9, "title": "weight: 71", "to": 0, "value": 71.0, "width": 2.9027831081870996}, {"arrows": "to", "from": 0, "title": "weight: 35", "to": 11, "value": 35.0, "width": 2.4322992790977875}, {"arrows": "to", "from": 0, "title": "weight: 18", "to": 16, "value": 18.0, "width": 2.0597671439071177}, {"arrows": "to", "from": 49, "title": "weight: 16", "to": 0, "value": 16.0, "width": 2.0}, {"arrows": "to", "from": 18, "title": "weight: 1,650", "to": 18, "value": 1650.0, "width": 6.373397212098098}, {"arrows": "to", "from": 11, "title": "weight: 1,317", "to": 11, "value": 1317.0, "width": 6.024159246172706}, {"arrows": "to", "from": 0, "title": "weight: 99", "to": 13, "value": 99.0, "width": 3.1543421455299043}, {"arrows": "to", "from": 28, "title": "weight: 662", "to": 28, "value": 662.0, "width": 5.072411720329612}, {"arrows": "to", "from": 0, "title": "weight: 42", "to": 19, "value": 42.0, "width": 2.5457298950218306}, {"arrows": "to", "from": 0, "title": "weight: 31", "to": 46, "value": 31.0, "width": 2.359611061770567}, {"arrows": "to", "from": 0, "title": "weight: 12", "to": 8, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 11, "title": "weight: 25", "to": 0, "value": 25.0, "width": 2.23606797749979}, {"arrows": "to", "from": 45, "title": "weight: 28", "to": 0, "value": 28.0, "width": 2.300326633791206}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0.6,
+            "centralGravity": 0.005,
+            "damping": 0.5,
+            "gravitationalConstant": -40,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

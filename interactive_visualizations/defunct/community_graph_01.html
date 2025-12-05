@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #0f172a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 0, "label": "Album / Song / Election playlist energy", "shape": "dot", "title": "group 0\u003cbr\u003esize: 3,346,152", "value": 3346152}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 1, "label": "Music takeover playlist energy", "shape": "dot", "title": "group 1\u003cbr\u003esize: 136", "value": 136}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 2, "label": "Hampshire / Gubernatorial / Election politics beat", "shape": "dot", "title": "group 2\u003cbr\u003esize: 113", "value": 113}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 3, "label": "Rhode / Gubernatorial / Island politics beat", "shape": "dot", "title": "group 3\u003cbr\u003esize: 109", "value": 109}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 4, "label": "Connecticut / Gubernatorial / Election politics beat", "shape": "dot", "title": "group 4\u003cbr\u003esize: 76", "value": 76}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 5, "label": "Fresh / Hits / Autumn nerd lane", "shape": "dot", "title": "group 5\u003cbr\u003esize: 55", "value": 55}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 6, "label": "Descentralizado / Torneo / Peruvian saga mode", "shape": "dot", "title": "group 6\u003cbr\u003esize: 40", "value": 40}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 7, "label": "Billboard / Hits / Top playlist energy", "shape": "dot", "title": "group 7\u003cbr\u003esize: 39", "value": 39}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 8, "label": "Ncaa / Basketball / Men sports grind", "shape": "dot", "title": "group 8\u003cbr\u003esize: 37", "value": 37}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 9, "label": "Palanca / Awards grab-bag vibes", "shape": "dot", "title": "group 9\u003cbr\u003esize: 23", "value": 23}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 10, "label": "Rowing / European / Championships deep dive", "shape": "dot", "title": "group 10\u003cbr\u003esize: 23", "value": 23}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 11, "label": "Wzzl / Wvza / Wtao rabbit hole", "shape": "dot", "title": "group 11\u003cbr\u003esize: 20", "value": 20}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 12, "label": "Singles / Championships / National chart chaser mix", "shape": "dot", "title": "group 12\u003cbr\u003esize: 17", "value": 17}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 13, "label": "Elections / Representatives / California chronicles", "shape": "dot", "title": "group 13\u003cbr\u003esize: 16", "value": 16}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 14, "label": "Mtv / Party / Remixed all-out mix", "shape": "dot", "title": "group 14\u003cbr\u003esize: 16", "value": 16}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 15, "label": "Totally / Hits / Vol playlist energy", "shape": "dot", "title": "group 15\u003cbr\u003esize: 15", "value": 15}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 16, "label": "Russian / Gubernatorial / Elections politics beat", "shape": "dot", "title": "group 16\u003cbr\u003esize: 14", "value": 14}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 17, "label": "Carlisle / United playground", "shape": "dot", "title": "group 17\u003cbr\u003esize: 14", "value": 14}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 18, "label": "Pretty / Died / Album playlist energy", "shape": "dot", "title": "group 18\u003cbr\u003esize: 14", "value": 14}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 19, "label": "York / Markers / Historic places \u0026 maps", "shape": "dot", "title": "group 19\u003cbr\u003esize: 14", "value": 14}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 20, "label": "Huddersfield / Town places \u0026 maps", "shape": "dot", "title": "group 20\u003cbr\u003esize: 13", "value": 13}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 21, "label": "Science takeover rabbit hole", "shape": "dot", "title": "group 21\u003cbr\u003esize: 13", "value": 13}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 22, "label": "Atp / Challenger screen binge", "shape": "dot", "title": "group 22\u003cbr\u003esize: 13", "value": 13}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 23, "label": "Group takeover chronicles", "shape": "dot", "title": "group 23\u003cbr\u003esize: 13", "value": 13}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 24, "label": "Canada / Television / Canadian all-out mix", "shape": "dot", "title": "group 24\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 25, "label": "Northern / Rugby / League sports grind", "shape": "dot", "title": "group 25\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 26, "label": "America / Baseball / All sports grind", "shape": "dot", "title": "group 26\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 27, "label": "Cecafa / Cup sports grind", "shape": "dot", "title": "group 27\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 28, "label": "Acc / Basketball / Tournament sports grind", "shape": "dot", "title": "group 28\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 29, "label": "Athenian / League sports grind", "shape": "dot", "title": "group 29\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 30, "label": "Carlisle / United deep dive", "shape": "dot", "title": "group 30\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 31, "label": "Plants / Animals / Waltzed playlist energy", "shape": "dot", "title": "group 31\u003cbr\u003esize: 12", "value": 12}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 32, "label": "Yale / Bulldogs / Football sports grind", "shape": "dot", "title": "group 32\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 33, "label": "China takeover chronicles", "shape": "dot", "title": "group 33\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 34, "label": "Brazilian / Football sports grind", "shape": "dot", "title": "group 34\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 35, "label": "Soccer / American / League sports grind", "shape": "dot", "title": "group 35\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 36, "label": "America / Baseball / All sports grind", "shape": "dot", "title": "group 36\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 37, "label": "Chaudhry / Muhammad / Sahiwal playground", "shape": "dot", "title": "group 37\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 38, "label": "Pearson / Freedom / Yachts military lore", "shape": "dot", "title": "group 38\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 39, "label": "Hardinge / Novel / Unraveller playlist energy", "shape": "dot", "title": "group 39\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 40, "label": "Douglass / Novel / Starman bookish lane", "shape": "dot", "title": "group 40\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 41, "label": "Polling / Division / Galle politics beat", "shape": "dot", "title": "group 41\u003cbr\u003esize: 11", "value": 11}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 42, "label": "Singles / Championships / National chart chaser mix", "shape": "dot", "title": "group 42\u003cbr\u003esize: 10", "value": 10}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 43, "label": "Maltese / Premier / League sports grind", "shape": "dot", "title": "group 43\u003cbr\u003esize: 10", "value": 10}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 44, "label": "Pba / Tour all-out mix", "shape": "dot", "title": "group 44\u003cbr\u003esize: 10", "value": 10}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 45, "label": "Pirates / Pittsburgh nerd lane", "shape": "dot", "title": "group 45\u003cbr\u003esize: 10", "value": 10}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 46, "label": "Rangers takeover saga mode", "shape": "dot", "title": "group 46\u003cbr\u003esize: 10", "value": 10}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 47, "label": "Eupholus / Tupinierii / Schoenherrii playground", "shape": "dot", "title": "group 47\u003cbr\u003esize: 10", "value": 10}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 48, "label": "Irish / Cup sports grind", "shape": "dot", "title": "group 48\u003cbr\u003esize: 9", "value": 9}, {"color": "#97c2fc", "font": {"color": "#e2e8f0"}, "id": 49, "label": "Sports takeover sports grind", "shape": "dot", "title": "group 49\u003cbr\u003esize: 9", "value": 9}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": 22, "title": "weight: 439", "to": 22, "value": 439.0, "width": 4.577371171290019}, {"arrows": "to", "from": 0, "title": "weight: 2,262,349,443", "to": 0, "value": 2262349443.0, "width": 10.0}, {"arrows": "to", "from": 36, "title": "weight: 116", "to": 36, "value": 116.0, "width": 3.281818034911291}, {"arrows": "to", "from": 2, "title": "weight: 22", "to": 0, "value": 22.0, "width": 2.1657367706679937}, {"arrows": "to", "from": 45, "title": "weight: 104", "to": 45, "value": 104.0, "width": 3.19343686757474}, {"arrows": "to", "from": 14, "title": "weight: 882", "to": 14, "value": 882.0, "width": 5.449631621480024}, {"arrows": "to", "from": 33, "title": "weight: 118", "to": 33, "value": 118.0, "width": 3.295873251689181}, {"arrows": "to", "from": 43, "title": "weight: 99", "to": 43, "value": 99.0, "width": 3.1543421455299043}, {"arrows": "to", "from": 29, "title": "weight: 208", "to": 29, "value": 208.0, "width": 3.7976578442318836}, {"arrows": "to", "from": 42, "title": "weight: 108", "to": 42, "value": 108.0, "width": 3.2237097954706257}, {"arrows": "to", "from": 7, "title": "weight: 1,372", "to": 7, "value": 1372.0, "width": 6.086092207229879}, {"arrows": "to", "from": 3, "title": "weight: 10", "to": 0, "value": 10.0, "width": 1.7782794100389228}, {"arrows": "to", "from": 41, "title": "weight: 195", "to": 41, "value": 195.0, "width": 3.736875706224244}, {"arrows": "to", "from": 0, "title": "weight: 20", "to": 7, "value": 20.0, "width": 2.114742526881128}, {"arrows": "to", "from": 37, "title": "weight: 186", "to": 37, "value": 186.0, "width": 3.692990887747471}, {"arrows": "to", "from": 16, "title": "weight: 198", "to": 16, "value": 198.0, "width": 3.7511661226171107}, {"arrows": "to", "from": 30, "title": "weight: 245", "to": 30, "value": 245.0, "width": 3.9563209984148817}, {"arrows": "to", "from": 24, "title": "weight: 130", "to": 24, "value": 130.0, "width": 3.3766483753851806}, {"arrows": "to", "from": 28, "title": "weight: 142", "to": 28, "value": 142.0, "width": 3.452010325565812}, {"arrows": "to", "from": 18, "title": "weight: 538", "to": 18, "value": 538.0, "width": 4.816100809730461}, {"arrows": "to", "from": 11, "title": "weight: 252", "to": 11, "value": 252.0, "width": 3.9842826037302554}, {"arrows": "to", "from": 21, "title": "weight: 139", "to": 21, "value": 139.0, "width": 3.4336316230125203}, {"arrows": "to", "from": 13, "title": "weight: 219", "to": 13, "value": 219.0, "width": 3.8469011667768047}, {"arrows": "to", "from": 25, "title": "weight: 146", "to": 25, "value": 146.0, "width": 3.4760676019885706}, {"arrows": "to", "from": 26, "title": "weight: 115", "to": 26, "value": 115.0, "width": 3.2747221706220526}, {"arrows": "to", "from": 17, "title": "weight: 175", "to": 17, "value": 175.0, "width": 3.63713576256413}, {"arrows": "to", "from": 20, "title": "weight: 175", "to": 20, "value": 175.0, "width": 3.63713576256413}, {"arrows": "to", "from": 19, "title": "weight: 178", "to": 19, "value": 178.0, "width": 3.6526242708669523}, {"arrows": "to", "from": 6, "title": "weight: 1,362", "to": 6, "value": 1362.0, "width": 6.074971948453085}, {"arrows": "to", "from": 23, "title": "weight: 260", "to": 23, "value": 260.0, "width": 4.015534272870436}, {"arrows": "to", "from": 0, "title": "weight: 12", "to": 1, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 2, "title": "weight: 1,941", "to": 2, "value": 1941.0, "width": 6.637528270660802}, {"arrows": "to", "from": 3, "title": "weight: 1,411", "to": 3, "value": 1411.0, "width": 6.128888964729732}, {"arrows": "to", "from": 8, "title": "weight: 652", "to": 8, "value": 652.0, "width": 5.053146610737453}, {"arrows": "to", "from": 46, "title": "weight: 119", "to": 46, "value": 119.0, "width": 3.3028339520229766}, {"arrows": "to", "from": 10, "title": "weight: 395", "to": 10, "value": 395.0, "width": 4.458094538516629}, {"arrows": "to", "from": 9, "title": "weight: 353", "to": 9, "value": 353.0, "width": 4.334546600055874}, {"arrows": "to", "from": 4, "title": "weight: 1,115", "to": 4, "value": 1115.0, "width": 5.778547889749466}, {"arrows": "to", "from": 44, "title": "weight: 123", "to": 44, "value": 123.0, "width": 3.3302457126178266}, {"arrows": "to", "from": 5, "title": "weight: 5,205", "to": 5, "value": 5205.0, "width": 8.493861662501399}, {"arrows": "to", "from": 0, "title": "weight: 35", "to": 5, "value": 35.0, "width": 2.4322992790977875}, {"arrows": "to", "from": 27, "title": "weight: 120", "to": 27, "value": 120.0, "width": 3.309750919646873}, {"arrows": "to", "from": 34, "title": "weight: 148", "to": 34, "value": 148.0, "width": 3.4879112747597865}, {"arrows": "to", "from": 40, "title": "weight: 738", "to": 40, "value": 738.0, "width": 5.212116212673337}, {"arrows": "to", "from": 38, "title": "weight: 125", "to": 38, "value": 125.0, "width": 3.34370152488211}, {"arrows": "to", "from": 8, "title": "weight: 10", "to": 0, "value": 10.0, "width": 1.7782794100389228}, {"arrows": "to", "from": 32, "title": "weight: 135", "to": 32, "value": 135.0, "width": 3.408658099402498}, {"arrows": "to", "from": 35, "title": "weight: 132", "to": 35, "value": 132.0, "width": 3.389561224270194}, {"arrows": "to", "from": 48, "title": "weight: 120", "to": 48, "value": 120.0, "width": 3.309750919646873}, {"arrows": "to", "from": 47, "title": "weight: 97", "to": 47, "value": 97.0, "width": 3.138288992714996}, {"arrows": "to", "from": 39, "title": "weight: 417", "to": 39, "value": 417.0, "width": 4.518913349098668}, {"arrows": "to", "from": 1, "title": "weight: 2,173", "to": 1, "value": 2173.0, "width": 6.827550665006204}, {"arrows": "to", "from": 0, "title": "weight: 12", "to": 4, "value": 12.0, "width": 1.8612097182041991}, {"arrows": "to", "from": 49, "title": "weight: 111", "to": 49, "value": 111.0, "width": 3.245867180408456}, {"arrows": "to", "from": 12, "title": "weight: 223", "to": 12, "value": 223.0, "width": 3.8643478781119174}, {"arrows": "to", "from": 15, "title": "weight: 825", "to": 15, "value": 825.0, "width": 5.359366868641309}, {"arrows": "to", "from": 31, "title": "weight: 356", "to": 31, "value": 356.0, "width": 4.3437267713466055}, {"arrows": "to", "from": 1, "title": "weight: 12", "to": 0, "value": 12.0, "width": 1.8612097182041991}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0.6,
+            "centralGravity": 0.005,
+            "damping": 0.5,
+            "gravitationalConstant": -40,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
